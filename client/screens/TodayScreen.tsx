@@ -3,6 +3,8 @@ import { View, StyleSheet, ScrollView, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Feather } from "@expo/vector-icons";
 import Animated, {
   useAnimatedStyle,
@@ -15,22 +17,30 @@ import { Card } from "@/components/Card";
 import { useTheme } from "@/hooks/useTheme";
 import { useApp } from "@/lib/AppContext";
 import { Spacing, BorderRadius } from "@/constants/theme";
+import { RootStackParamList } from "@/navigation/RootStackNavigator";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-function PlanetCard({
-  planet,
-  sign,
-  degree,
-  house,
+function getScoreColor(score: number, theme: any) {
+  if (score >= 80) return theme.accent;
+  if (score >= 60) return theme.secondary;
+  return "#EF4444";
+}
+
+function StatusCard({
+  category,
+  icon,
+  score,
+  insight,
 }: {
-  planet: string;
-  sign: string;
-  degree: number;
-  house: number;
+  category: string;
+  icon: string;
+  score: number;
+  insight: string;
 }) {
   const { theme } = useTheme();
   const scale = useSharedValue(1);
+  const scoreColor = getScoreColor(score, theme);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -39,28 +49,48 @@ function PlanetCard({
   return (
     <AnimatedPressable
       onPressIn={() => {
-        scale.value = withSpring(0.95);
+        scale.value = withSpring(0.98);
       }}
       onPressOut={() => {
         scale.value = withSpring(1);
       }}
       style={[
-        styles.planetCard,
+        styles.statusCard,
         { backgroundColor: theme.backgroundDefault },
         animatedStyle,
       ]}
     >
-      <View style={[styles.planetIcon, { backgroundColor: theme.primary + "20" }]}>
-        <Feather name="circle" size={16} color={theme.primary} />
+      <View style={styles.statusHeader}>
+        <View style={[styles.statusIcon, { backgroundColor: scoreColor + "20" }]}>
+          <Feather name={icon as any} size={18} color={scoreColor} />
+        </View>
+        <View style={styles.statusTitleRow}>
+          <ThemedText type="body" style={{ fontWeight: "600" }}>
+            {category}
+          </ThemedText>
+          <View style={styles.scoreContainer}>
+            <ThemedText type="h4" style={{ color: scoreColor }}>
+              {score}
+            </ThemedText>
+            <ThemedText type="caption" style={{ color: theme.textSecondary }}>
+              /100
+            </ThemedText>
+          </View>
+        </View>
       </View>
-      <ThemedText type="small" style={styles.planetName}>
-        {planet}
-      </ThemedText>
-      <ThemedText type="caption" style={{ color: theme.textSecondary }}>
-        {sign} {degree}
-      </ThemedText>
-      <ThemedText type="caption" style={{ color: theme.textSecondary }}>
-        House {house}
+      <View style={[styles.progressBar, { backgroundColor: theme.border }]}>
+        <View
+          style={[
+            styles.progressFill,
+            { width: `${score}%`, backgroundColor: scoreColor },
+          ]}
+        />
+      </View>
+      <ThemedText
+        type="small"
+        style={{ color: theme.textSecondary, marginTop: Spacing.sm }}
+      >
+        {insight}
       </ThemedText>
     </AnimatedPressable>
   );
@@ -106,21 +136,21 @@ export default function TodayScreen() {
   const headerHeight = useHeaderHeight();
   const tabBarHeight = useBottomTabBarHeight();
   const { theme } = useTheme();
-  const { dailyHoroscope, planetaryPositions, auspiciousTimes, user } = useApp();
+  const { dailyHoroscope, dailyStatus, auspiciousTimes } = useApp();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const today = new Date();
   const dateString = today.toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
-    year: "numeric",
   });
 
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: theme.backgroundRoot }}
       contentContainerStyle={{
-        paddingTop: headerHeight + Spacing.xl,
+        paddingTop: headerHeight + Spacing.lg,
         paddingBottom: tabBarHeight + Spacing.xl,
         paddingHorizontal: Spacing.lg,
       }}
@@ -147,23 +177,33 @@ export default function TodayScreen() {
       </Card>
 
       <ThemedText type="h4" style={styles.sectionTitle}>
-        Planetary Positions
+        Today's Status
       </ThemedText>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.planetsContainer}
-      >
-        {planetaryPositions.map((pos) => (
-          <PlanetCard
-            key={pos.planet}
-            planet={pos.planet}
-            sign={pos.sign}
-            degree={pos.degree}
-            house={pos.house}
+      <View style={styles.statusContainer}>
+        {dailyStatus.map((status) => (
+          <StatusCard
+            key={status.category}
+            category={status.category}
+            icon={status.icon}
+            score={status.score}
+            insight={status.insight}
           />
         ))}
-      </ScrollView>
+      </View>
+
+      <Pressable
+        onPress={() => navigation.navigate("BirthChart")}
+        style={({ pressed }) => [
+          styles.ctaButton,
+          { backgroundColor: theme.primary, opacity: pressed ? 0.9 : 1 },
+        ]}
+      >
+        <Feather name="globe" size={18} color="#FFFFFF" />
+        <ThemedText type="body" style={{ color: "#FFFFFF", fontWeight: "600", marginLeft: Spacing.sm }}>
+          View Planetary Positions
+        </ThemedText>
+        <Feather name="chevron-right" size={18} color="#FFFFFF" style={{ marginLeft: "auto" }} />
+      </Pressable>
 
       <ThemedText type="h4" style={styles.sectionTitle}>
         Auspicious Times
@@ -179,18 +219,6 @@ export default function TodayScreen() {
           />
         ))}
       </View>
-
-      <Card style={styles.insightCard}>
-        <View style={styles.cardHeader}>
-          <View style={[styles.iconContainer, { backgroundColor: theme.accent + "20" }]}>
-            <Feather name="zap" size={20} color={theme.accent} />
-          </View>
-          <ThemedText type="h4">Today's Insight</ThemedText>
-        </View>
-        <ThemedText type="body" style={{ color: theme.textSecondary, marginTop: Spacing.md }}>
-          The Moon in Pisces enhances your intuitive abilities today. Trust your inner guidance, especially in matters of the heart. This is an excellent day for creative pursuits and spiritual practices.
-        </ThemedText>
-      </Card>
     </ScrollView>
   );
 }
@@ -199,10 +227,10 @@ const styles = StyleSheet.create({
   dateContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: Spacing.lg,
+    marginBottom: Spacing.md,
   },
   horoscopeCard: {
-    marginBottom: Spacing.xl,
+    marginBottom: Spacing.lg,
   },
   cardHeader: {
     flexDirection: "row",
@@ -218,28 +246,54 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     marginBottom: Spacing.md,
+    marginTop: Spacing.sm,
   },
-  planetsContainer: {
+  statusContainer: {
     gap: Spacing.md,
-    paddingBottom: Spacing.lg,
+    marginBottom: Spacing.lg,
   },
-  planetCard: {
+  statusCard: {
     padding: Spacing.md,
     borderRadius: BorderRadius.md,
-    alignItems: "center",
-    minWidth: 90,
   },
-  planetIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+  statusHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.md,
+    marginBottom: Spacing.sm,
+  },
+  statusIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: Spacing.xs,
   },
-  planetName: {
-    fontWeight: "600",
-    marginBottom: Spacing.xs,
+  statusTitleRow: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  scoreContainer: {
+    flexDirection: "row",
+    alignItems: "baseline",
+  },
+  progressBar: {
+    height: 6,
+    borderRadius: 3,
+    overflow: "hidden",
+  },
+  progressFill: {
+    height: "100%",
+    borderRadius: 3,
+  },
+  ctaButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: Spacing.md,
+    borderRadius: BorderRadius.md,
+    marginBottom: Spacing.lg,
   },
   auspiciousContainer: {
     gap: Spacing.md,
@@ -263,8 +317,5 @@ const styles = StyleSheet.create({
   },
   auspiciousInfo: {
     flex: 1,
-  },
-  insightCard: {
-    marginBottom: Spacing.xl,
   },
 });
