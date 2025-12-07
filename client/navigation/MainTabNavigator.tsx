@@ -74,7 +74,7 @@ export default function MainTabNavigator() {
         component={TodayScreen}
         options={{
           title: "Today",
-          headerTitle: () => <HeaderTitle title="Jyotish" />,
+          headerTitle: () => <HeaderTitle title="MyOrca" />,
           tabBarIcon: ({ color, size }) => (
             <Feather name="sun" size={size} color={color} />
           ),

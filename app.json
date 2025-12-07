@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Jyotish",
-    "slug": "jyotish",
+    "name": "MyOrca",
+    "slug": "myorca",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "jyotish",
+    "scheme": "myorca",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

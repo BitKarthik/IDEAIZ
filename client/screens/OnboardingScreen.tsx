@@ -37,7 +37,7 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const onboardingSteps = [
   {
     icon: "star",
-    title: "Welcome to Jyotish",
+    title: "Welcome to MyOrca",
     description:
       "Discover the ancient wisdom of Vedic astrology. Get personalized insights about your life, career, relationships, and spiritual path.",
   },
@@ -214,7 +214,7 @@ function TrialStep({ onComplete }: { onComplete: () => void }) {
         Start Your Journey
       </ThemedText>
       <ThemedText type="body" style={[styles.stepDescription, { color: theme.textSecondary }]}>
-        Try Jyotish Premium free for 7 days. Cancel anytime.
+        Try MyOrca Premium free for 7 days. Cancel anytime.
       </ThemedText>
 
       <View style={styles.featuresListSmall}>
