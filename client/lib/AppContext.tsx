@@ -113,7 +113,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isOnboarded, setOnboarded] = useState(true);
   const [dailyHoroscope] = useState(
-    "Today brings a harmonious alignment between the Moon and Jupiter, creating favorable conditions for emotional growth and spiritual insights. Your natural intuition is heightened, making this an excellent day for meditation and introspection. Career matters may require patience, but unexpected opportunities could arise in the afternoon hours."
+    "Good morning, dear one! I see the Moon and Jupiter dancing together in your sky today, and this brings such beautiful energy for your heart and soul. Trust that little voice inside you today \u2014 it's speaking louder than usual. If work feels slow, don't worry. Something lovely is brewing for you this afternoon. Take a deep breath, stay open, and let the universe surprise you."
   );
   const [planetaryPositions] = useState(defaultPlanetaryPositions);
   const [auspiciousTimes] = useState(defaultAuspiciousTimes);

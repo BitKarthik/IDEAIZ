@@ -169,7 +169,7 @@ export default function TodayScreen() {
           <View style={[styles.iconContainer, { backgroundColor: theme.primary + "20" }]}>
             <Feather name="star" size={20} color={theme.primary} />
           </View>
-          <ThemedText type="h4">Daily Horoscope</ThemedText>
+          <ThemedText type="h4">Your Cosmic Whisper</ThemedText>
         </View>
         <ThemedText type="body" style={{ color: theme.textSecondary, marginTop: Spacing.md }}>
           {dailyHoroscope}
