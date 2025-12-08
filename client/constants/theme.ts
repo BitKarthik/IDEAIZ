@@ -56,7 +56,7 @@ export const Colors = {
     info: "#38BDF8",
     border: "#5C3D1E",
     cardShadow: "rgba(0, 0, 0, 0.4)",
-    ctaText: "#C9A962",
+    ctaText: "#8B6914",
   },
 };
 
