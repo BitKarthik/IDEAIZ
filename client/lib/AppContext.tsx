@@ -84,10 +84,11 @@ const defaultAuspiciousTimes: AuspiciousTime[] = [
 ];
 
 const defaultDailyStatus: DailyStatus[] = [
-  { category: "Health", icon: "heart", score: 78, insight: "Focus on rest and hydration. Avoid strenuous activities after sunset." },
-  { category: "Family", icon: "users", score: 85, insight: "Harmonious energy surrounds family matters. Good day for meaningful conversations." },
-  { category: "Finance", icon: "dollar-sign", score: 62, insight: "Exercise caution with major purchases. Better opportunities coming mid-week." },
-  { category: "Career", icon: "briefcase", score: 91, insight: "Strong momentum for professional growth. Present your ideas with confidence." },
+  { category: "Health", icon: "heart", score: 78, insight: "Rest well today" },
+  { category: "Family", icon: "users", score: 85, insight: "Harmony at home" },
+  { category: "Finance", icon: "dollar-sign", score: 62, insight: "Be cautious" },
+  { category: "Career", icon: "briefcase", score: 91, insight: "Great momentum" },
+  { category: "Safety", icon: "shield", score: 74, insight: "Stay alert on roads" },
 ];
 
 const defaultUser: User = {
@@ -113,7 +114,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isOnboarded, setOnboarded] = useState(true);
   const [dailyHoroscope] = useState(
-    "Good morning, dear one! I see the Moon and Jupiter dancing together in your sky today, and this brings such beautiful energy for your heart and soul. Trust that little voice inside you today \u2014 it's speaking louder than usual. If work feels slow, don't worry. Something lovely is brewing for you this afternoon. Take a deep breath, stay open, and let the universe surprise you."
+    "Good morning, dear one! The Moon and Jupiter are dancing beautifully for you today. Trust your intuition \u2014 something lovely awaits this afternoon."
   );
   const [planetaryPositions] = useState(defaultPlanetaryPositions);
   const [auspiciousTimes] = useState(defaultAuspiciousTimes);
