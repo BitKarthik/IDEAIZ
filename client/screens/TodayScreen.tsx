@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, ScrollView, Pressable } from "react-native";
+import { View, StyleSheet, ScrollView, Pressable, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
@@ -47,25 +47,16 @@ function CompactStatusCard({
   );
 }
 
-function AuspiciousTimeCard({
-  name,
-  startTime,
-  endTime,
-}: {
-  name: string;
-  startTime: string;
-  endTime: string;
-}) {
+function AdviceItem({ text, type }: { text: string; type: "do" | "dont" }) {
   const { theme } = useTheme();
+  const iconColor = type === "do" ? theme.accent : theme.error;
+  const iconName = type === "do" ? "check-circle" : "x-circle";
 
   return (
-    <View style={[styles.auspiciousCard, { backgroundColor: theme.backgroundDefault }]}>
-      <Feather name="clock" size={12} color={theme.secondary} />
-      <ThemedText type="caption" style={{ fontWeight: "600", marginLeft: Spacing.xs }}>
-        {name}
-      </ThemedText>
-      <ThemedText type="caption" style={{ color: theme.textSecondary, marginLeft: "auto" }}>
-        {startTime} - {endTime}
+    <View style={styles.adviceItem}>
+      <Feather name={iconName} size={14} color={iconColor} style={styles.adviceIcon} />
+      <ThemedText type="caption" style={styles.adviceText} numberOfLines={2}>
+        {text}
       </ThemedText>
     </View>
   );
@@ -75,122 +66,175 @@ export default function TodayScreen() {
   const insets = useSafeAreaInsets();
   const headerHeight = useHeaderHeight();
   const tabBarHeight = useBottomTabBarHeight();
+  const { height: screenHeight } = useWindowDimensions();
   const { theme } = useTheme();
-  const { dailyHoroscope, dailyStatus, auspiciousTimes } = useApp();
+  const { dailyHoroscope, dailyStatus, auspiciousTimes, dailyAdvice } = useApp();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const today = new Date();
   const dateString = today.toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
+    weekday: "long",
+    month: "long",
     day: "numeric",
   });
+
+  const adviceSectionMinHeight = screenHeight * 0.3;
 
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: theme.backgroundRoot }}
       contentContainerStyle={{
-        paddingTop: headerHeight + Spacing.md,
-        paddingBottom: tabBarHeight + Spacing.lg,
-        paddingHorizontal: Spacing.md,
+        paddingTop: headerHeight + Spacing.lg,
+        paddingBottom: tabBarHeight + Spacing.xl,
+        paddingHorizontal: Spacing.lg,
       }}
       scrollIndicatorInsets={{ bottom: insets.bottom }}
       showsVerticalScrollIndicator={false}
     >
-      <View style={styles.dateRow}>
-        <Feather name="calendar" size={14} color={theme.primary} />
-        <ThemedText type="caption" style={{ marginLeft: Spacing.xs, color: theme.textSecondary }}>
+      <View style={styles.headerSection}>
+        <ThemedText type="caption" style={[styles.dateLabel, { color: theme.textSecondary }]}>
           {dateString}
         </ThemedText>
       </View>
 
-      <Card style={styles.horoscopeCard}>
-        <View style={styles.cardHeader}>
-          <View style={[styles.iconContainer, { backgroundColor: theme.primary + "20" }]}>
-            <Feather name="star" size={16} color={theme.primary} />
-          </View>
-          <ThemedText type="body" style={{ fontWeight: "600" }}>Your Cosmic Whisper</ThemedText>
-        </View>
-        <ThemedText type="small" style={{ color: theme.textSecondary, marginTop: Spacing.sm }}>
+      <View style={styles.cosmicSection}>
+        <ThemedText type="h3" style={[styles.sectionLabel, { color: theme.primary }]}>
+          Your Cosmic Whisper
+        </ThemedText>
+        <ThemedText type="body" style={[styles.horoscopeText, { color: theme.text }]}>
           {dailyHoroscope}
         </ThemedText>
-      </Card>
+      </View>
 
-      <ThemedText type="body" style={[styles.sectionTitle, { fontWeight: "600" }]}>
-        Today's Status
-      </ThemedText>
-      <View style={styles.statusGrid}>
-        {dailyStatus.map((status) => (
-          <CompactStatusCard
-            key={status.category}
-            category={status.category}
-            icon={status.icon}
-            score={status.score}
-          />
-        ))}
+      <View style={styles.statusSection}>
+        <ThemedText type="small" style={[styles.minimalLabel, { color: theme.textSecondary }]}>
+          TODAY'S ENERGY
+        </ThemedText>
+        <View style={styles.statusGrid}>
+          {dailyStatus.map((status) => (
+            <CompactStatusCard
+              key={status.category}
+              category={status.category}
+              icon={status.icon}
+              score={status.score}
+            />
+          ))}
+        </View>
       </View>
 
       <Pressable
         onPress={() => navigation.navigate("BirthChart")}
         style={({ pressed }) => [
           styles.ctaButton,
-          { backgroundColor: theme.primary, opacity: pressed ? 0.9 : 1 },
+          { backgroundColor: theme.primary + "15", opacity: pressed ? 0.7 : 1 },
         ]}
       >
-        <Feather name="globe" size={16} color="#FFFFFF" />
-        <ThemedText type="small" style={{ color: "#FFFFFF", fontWeight: "600", marginLeft: Spacing.sm }}>
+        <View style={[styles.ctaIconContainer, { backgroundColor: theme.primary + "20" }]}>
+          <Feather name="globe" size={16} color={theme.primary} />
+        </View>
+        <ThemedText type="small" style={{ color: theme.primary, fontWeight: "600" }}>
           View Planetary Positions
         </ThemedText>
-        <Feather name="chevron-right" size={16} color="#FFFFFF" style={{ marginLeft: "auto" }} />
+        <Feather name="chevron-right" size={16} color={theme.primary} style={{ marginLeft: "auto" }} />
       </Pressable>
 
-      <ThemedText type="body" style={[styles.sectionTitle, { fontWeight: "600" }]}>
-        Auspicious Times
-      </ThemedText>
-      <View style={styles.auspiciousContainer}>
-        {auspiciousTimes.map((time) => (
-          <AuspiciousTimeCard
-            key={time.name}
-            name={time.name}
-            startTime={time.startTime}
-            endTime={time.endTime}
-          />
-        ))}
+      <View style={styles.timesSection}>
+        <ThemedText type="small" style={[styles.minimalLabel, { color: theme.textSecondary }]}>
+          AUSPICIOUS WINDOWS
+        </ThemedText>
+        <Card style={styles.timesCard}>
+          {auspiciousTimes.map((time, index) => (
+            <View 
+              key={time.name} 
+              style={[
+                styles.timeRow, 
+                index < auspiciousTimes.length - 1 && { borderBottomWidth: 1, borderBottomColor: theme.border }
+              ]}
+            >
+              <View style={styles.timeInfo}>
+                <ThemedText type="small" style={{ fontWeight: "600" }}>
+                  {time.name}
+                </ThemedText>
+                <ThemedText type="caption" style={{ color: theme.textSecondary }}>
+                  {time.startTime} - {time.endTime}
+                </ThemedText>
+              </View>
+            </View>
+          ))}
+        </Card>
+      </View>
+
+      <View style={[styles.adviceSection, { backgroundColor: theme.backgroundSecondary, minHeight: adviceSectionMinHeight }]}>
+        <ThemedText type="small" style={[styles.minimalLabel, { color: theme.textSecondary, marginBottom: Spacing.md }]}>
+          DAILY GUIDANCE
+        </ThemedText>
+        
+        <View style={styles.adviceColumns}>
+          <View style={styles.adviceColumn}>
+            <View style={styles.adviceHeader}>
+              <Feather name="check" size={12} color={theme.accent} />
+              <ThemedText type="caption" style={[styles.adviceHeaderText, { color: theme.accent }]}>
+                DO
+              </ThemedText>
+            </View>
+            {dailyAdvice.dos.map((item, index) => (
+              <AdviceItem key={index} text={item} type="do" />
+            ))}
+          </View>
+
+          <View style={[styles.columnDivider, { backgroundColor: theme.border }]} />
+
+          <View style={styles.adviceColumn}>
+            <View style={styles.adviceHeader}>
+              <Feather name="x" size={12} color={theme.error} />
+              <ThemedText type="caption" style={[styles.adviceHeaderText, { color: theme.error }]}>
+                DON'T
+              </ThemedText>
+            </View>
+            {dailyAdvice.donts.map((item, index) => (
+              <AdviceItem key={index} text={item} type="dont" />
+            ))}
+          </View>
+        </View>
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  dateRow: {
-    flexDirection: "row",
-    alignItems: "center",
+  headerSection: {
+    marginBottom: Spacing.lg,
+  },
+  dateLabel: {
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    fontWeight: "500",
+  },
+  cosmicSection: {
+    marginBottom: Spacing["2xl"],
+  },
+  sectionLabel: {
+    marginBottom: Spacing.sm,
+    fontWeight: "600",
+  },
+  horoscopeText: {
+    lineHeight: 24,
+    fontWeight: "400",
+  },
+  minimalLabel: {
+    textTransform: "uppercase",
+    letterSpacing: 1.5,
+    fontWeight: "600",
+    fontSize: 10,
     marginBottom: Spacing.sm,
   },
-  horoscopeCard: {
-    marginBottom: Spacing.md,
-    padding: Spacing.md,
-  },
-  cardHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.sm,
-  },
-  iconContainer: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  sectionTitle: {
-    marginBottom: Spacing.sm,
+  statusSection: {
+    marginBottom: Spacing.xl,
   },
   statusGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: Spacing.sm,
-    marginBottom: Spacing.md,
   },
   compactCard: {
     width: "31%",
@@ -209,18 +253,68 @@ const styles = StyleSheet.create({
   ctaButton: {
     flexDirection: "row",
     alignItems: "center",
-    padding: Spacing.sm,
+    padding: Spacing.md,
     borderRadius: BorderRadius.sm,
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.xl,
   },
-  auspiciousContainer: {
-    gap: Spacing.xs,
+  ctaIconContainer: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: Spacing.sm,
+  },
+  timesSection: {
+    marginBottom: Spacing.xl,
+  },
+  timesCard: {
+    padding: Spacing.md,
+  },
+  timeRow: {
+    paddingVertical: Spacing.sm,
+  },
+  timeInfo: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  adviceSection: {
+    padding: Spacing.lg,
+    borderRadius: BorderRadius.md,
     marginBottom: Spacing.lg,
   },
-  auspiciousCard: {
+  adviceColumns: {
+    flexDirection: "row",
+  },
+  adviceColumn: {
+    flex: 1,
+  },
+  columnDivider: {
+    width: 1,
+    marginHorizontal: Spacing.md,
+  },
+  adviceHeader: {
     flexDirection: "row",
     alignItems: "center",
-    padding: Spacing.sm,
-    borderRadius: BorderRadius.sm,
+    marginBottom: Spacing.sm,
+    gap: Spacing.xs,
+  },
+  adviceHeaderText: {
+    fontWeight: "700",
+    letterSpacing: 1,
+  },
+  adviceItem: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginBottom: Spacing.sm,
+  },
+  adviceIcon: {
+    marginTop: 2,
+    marginRight: Spacing.xs,
+  },
+  adviceText: {
+    flex: 1,
+    lineHeight: 18,
   },
 });
