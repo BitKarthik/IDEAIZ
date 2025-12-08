@@ -55,8 +55,14 @@ interface DailyStatus {
   insight: string;
 }
 
+interface DailyAdvice {
+  dos: string[];
+  donts: string[];
+}
+
 interface AppContextType extends AppState {
   dailyStatus: DailyStatus[];
+  dailyAdvice: DailyAdvice;
   setUser: (user: User | null) => void;
   addMessage: (content: string, isUser: boolean) => void;
   clearMessages: () => void;
@@ -91,6 +97,21 @@ const defaultDailyStatus: DailyStatus[] = [
   { category: "Safety", icon: "shield", score: 74, insight: "Stay alert on roads" },
 ];
 
+const defaultDailyAdvice: DailyAdvice = {
+  dos: [
+    "Wear something green today",
+    "Start new projects after 11 AM",
+    "Connect with an old friend",
+    "Practice gratitude before sleep",
+  ],
+  donts: [
+    "Avoid important decisions before noon",
+    "Skip arguments with loved ones",
+    "Don't lend money today",
+    "Avoid traveling north",
+  ],
+};
+
 const defaultUser: User = {
   id: "1",
   name: "Seeker",
@@ -119,6 +140,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [planetaryPositions] = useState(defaultPlanetaryPositions);
   const [auspiciousTimes] = useState(defaultAuspiciousTimes);
   const [dailyStatus] = useState(defaultDailyStatus);
+  const [dailyAdvice] = useState(defaultDailyAdvice);
 
   const addMessage = (content: string, isUser: boolean) => {
     const newMessage: Message = {
@@ -156,6 +178,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         planetaryPositions,
         auspiciousTimes,
         dailyStatus,
+        dailyAdvice,
         setUser,
         addMessage,
         clearMessages,
