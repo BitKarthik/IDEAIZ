@@ -125,7 +125,7 @@ export default function TodayScreen() {
         <View style={styles.adviceColumns}>
           <View style={styles.adviceColumn}>
             <ThemedText type="body" style={[styles.adviceHeaderText, { color: theme.text }]}>
-              Do
+              Embrace
             </ThemedText>
             {dailyAdvice.dos.map((item, index) => (
               <AdviceItem key={index} text={item} />
@@ -134,7 +134,7 @@ export default function TodayScreen() {
 
           <View style={styles.adviceColumn}>
             <ThemedText type="body" style={[styles.adviceHeaderText, { color: theme.text }]}>
-              Don't
+              Avoid
             </ThemedText>
             {dailyAdvice.donts.map((item, index) => (
               <AdviceItem key={index} text={item} />
@@ -147,16 +147,16 @@ export default function TodayScreen() {
         onPress={() => navigation.navigate("BirthChart")}
         style={({ pressed }) => [
           styles.ctaButton,
-          { backgroundColor: theme.primary + "15", opacity: pressed ? 0.7 : 1 },
+          { backgroundColor: theme.backgroundSecondary, opacity: pressed ? 0.7 : 1 },
         ]}
       >
-        <View style={[styles.ctaIconContainer, { backgroundColor: theme.primary + "20" }]}>
-          <Feather name="globe" size={16} color={theme.primary} />
+        <View style={[styles.ctaIconContainer, { backgroundColor: theme.ctaText + "20" }]}>
+          <Feather name="globe" size={16} color={theme.ctaText} />
         </View>
-        <ThemedText type="small" style={{ color: theme.primary, fontWeight: "600" }}>
+        <ThemedText type="small" style={{ color: theme.ctaText, fontWeight: "600" }}>
           View Planetary Positions
         </ThemedText>
-        <Feather name="chevron-right" size={16} color={theme.primary} style={{ marginLeft: "auto" }} />
+        <Feather name="chevron-right" size={16} color={theme.ctaText} style={{ marginLeft: "auto" }} />
       </Pressable>
 
       <View style={[styles.timesSection, { minHeight: adviceSectionMinHeight }]}>
@@ -228,12 +228,12 @@ const styles = StyleSheet.create({
   statusGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
-    gap: Spacing.xl,
+    justifyContent: "center",
+    gap: Spacing.md,
   },
   circleCardContainer: {
     alignItems: "center",
-    width: "30%",
+    width: 80,
   },
   circleCard: {
     width: 72,
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
   },
   adviceSection: {
     marginBottom: Spacing["4xl"],
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   adviceColumns: {
     flexDirection: "row",
@@ -294,21 +294,24 @@ const styles = StyleSheet.create({
   },
   adviceColumn: {
     flex: 1,
-    alignItems: "center",
+    alignItems: "flex-start",
+    paddingHorizontal: Spacing.sm,
   },
   adviceHeaderText: {
-    fontWeight: "400",
+    fontWeight: "600",
     letterSpacing: 2,
     marginBottom: Spacing.lg,
-    textAlign: "center",
+    textAlign: "left",
+    textTransform: "uppercase",
+    fontSize: 12,
   },
   adviceItem: {
     marginBottom: Spacing.md,
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   adviceText: {
-    lineHeight: 24,
-    textAlign: "center",
+    lineHeight: 22,
+    textAlign: "left",
     letterSpacing: 0.3,
   },
 });

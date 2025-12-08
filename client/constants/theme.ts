@@ -31,6 +31,7 @@ export const Colors = {
     info: "#0EA5E9",
     border: "#D4C9B8",
     cardShadow: "rgba(61, 41, 20, 0.08)",
+    ctaText: "#3D2914",
   },
   dark: {
     text: "#FFFFFF",
@@ -55,6 +56,7 @@ export const Colors = {
     info: "#38BDF8",
     border: "#5C3D1E",
     cardShadow: "rgba(0, 0, 0, 0.4)",
+    ctaText: "#C9A962",
   },
 };
 
