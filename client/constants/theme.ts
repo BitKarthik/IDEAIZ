@@ -1,57 +1,57 @@
 import { Platform } from "react-native";
 
-const primaryPurple = "#6B46C1";
-const primaryPurpleLight = "#8B5CF6";
-const goldenAmber = "#F59E0B";
-const goldenLight = "#FBBF24";
+const darkBrown = "#3D2914";
+const darkBrownLight = "#5C3D1E";
+const mildGold = "#C9A962";
+const mildGoldLight = "#D4BC7D";
 const tealAccent = "#14B8A6";
 
 export const Colors = {
   light: {
-    text: "#1F2937",
-    textSecondary: "#6B7280",
+    text: "#3D2914",
+    textSecondary: "#6B5344",
     buttonText: "#FFFFFF",
-    tabIconDefault: "#6B7280",
-    tabIconSelected: primaryPurple,
-    link: primaryPurple,
-    primary: primaryPurple,
-    primaryLight: primaryPurpleLight,
-    secondary: goldenAmber,
-    secondaryLight: goldenLight,
+    tabIconDefault: "#6B5344",
+    tabIconSelected: mildGold,
+    link: mildGold,
+    primary: mildGold,
+    primaryLight: mildGoldLight,
+    secondary: darkBrown,
+    secondaryLight: darkBrownLight,
     accent: tealAccent,
-    backgroundRoot: "#FAFAF9",
+    backgroundRoot: "#F5F0E8",
     backgroundDefault: "#FFFFFF",
-    backgroundSecondary: "#F5F5F4",
-    backgroundTertiary: "#E7E5E4",
+    backgroundSecondary: "#EDE6DB",
+    backgroundTertiary: "#E0D6C8",
     success: "#10B981",
-    warning: "#F59E0B",
+    warning: "#C9A962",
     error: "#F43F5E",
     info: "#0EA5E9",
-    border: "#E5E7EB",
-    cardShadow: "rgba(0, 0, 0, 0.05)",
+    border: "#D4C9B8",
+    cardShadow: "rgba(61, 41, 20, 0.08)",
   },
   dark: {
-    text: "#ECEDEE",
-    textSecondary: "#9BA1A6",
+    text: "#D4BC7D",
+    textSecondary: "#A89570",
     buttonText: "#FFFFFF",
-    tabIconDefault: "#9BA1A6",
-    tabIconSelected: primaryPurpleLight,
-    link: primaryPurpleLight,
-    primary: primaryPurple,
-    primaryLight: primaryPurpleLight,
-    secondary: goldenAmber,
-    secondaryLight: goldenLight,
+    tabIconDefault: "#A89570",
+    tabIconSelected: mildGold,
+    link: mildGold,
+    primary: mildGold,
+    primaryLight: mildGoldLight,
+    secondary: darkBrown,
+    secondaryLight: darkBrownLight,
     accent: tealAccent,
-    backgroundRoot: "#1C1917",
-    backgroundDefault: "#292524",
-    backgroundSecondary: "#3D3B39",
-    backgroundTertiary: "#52504E",
+    backgroundRoot: "#1A120B",
+    backgroundDefault: "#2A1E14",
+    backgroundSecondary: "#3D2914",
+    backgroundTertiary: "#4A3520",
     success: "#10B981",
-    warning: "#F59E0B",
+    warning: "#C9A962",
     error: "#F43F5E",
     info: "#0EA5E9",
-    border: "#404040",
-    cardShadow: "rgba(0, 0, 0, 0.3)",
+    border: "#5C3D1E",
+    cardShadow: "rgba(0, 0, 0, 0.4)",
   },
 };
 

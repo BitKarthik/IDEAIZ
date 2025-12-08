@@ -114,25 +114,36 @@
 
 ### Color Palette
 **Primary Colors**:
-- Primary: Deep Purple (#6B46C1) - spiritual, mystical
-- Secondary: Golden Amber (#F59E0B) - auspicious, divine
+- Primary: Mild Gold (#C9A962) - divine, elegant warmth
+- Primary Light: Soft Gold (#D4BC7D) - subtle highlights
+- Secondary: Dark Brown (#3D2914) - grounded, earthy
 - Accent: Teal (#14B8A6) - wisdom, clarity
 
-**Neutrals**:
-- Background: Off-white (#FAFAF9)
+**Light Mode Neutrals**:
+- Background Root: Warm Cream (#F5F0E8)
 - Surface: White (#FFFFFF)
-- Text Primary: Deep Gray (#1F2937)
-- Text Secondary: Medium Gray (#6B7280)
+- Background Secondary: Soft Beige (#EDE6DB)
+- Text Primary: Dark Brown (#3D2914)
+- Text Secondary: Medium Brown (#6B5344)
+- Border: Warm Taupe (#D4C9B8)
+
+**Dark Mode Neutrals**:
+- Background Root: Deep Espresso (#1A120B)
+- Surface: Rich Mahogany (#2A1E14)
+- Background Secondary: Dark Brown (#3D2914)
+- Text Primary: Mild Gold (#D4BC7D)
+- Text Secondary: Muted Gold (#A89570)
+- Border: Warm Brown (#5C3D1E)
 
 **Semantic**:
 - Success: Emerald (#10B981)
-- Warning: Amber (#F59E0B)
+- Warning: Gold (#C9A962)
 - Error: Rose (#F43F5E)
 - Info: Sky Blue (#0EA5E9)
 
 **Gradients**:
-- Mystical gradient: Deep Purple to Violet (#6B46C1 to #8B5CF6)
-- Divine gradient: Golden to Amber (#FBBF24 to #F59E0B)
+- Earth gradient: Dark Brown to Warm Brown (#3D2914 to #5C3D1E)
+- Divine gradient: Gold to Soft Gold (#C9A962 to #D4BC7D)
 
 ### Typography
 **Font Family**: System default (SF Pro for iOS, Roboto for Android)

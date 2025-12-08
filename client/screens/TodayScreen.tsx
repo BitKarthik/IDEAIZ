@@ -20,7 +20,7 @@ function getScoreColor(score: number, theme: any) {
   return "#EF4444";
 }
 
-function CompactStatusCard({
+function CircleStatusCard({
   category,
   icon,
   score,
@@ -33,15 +33,17 @@ function CompactStatusCard({
   const scoreColor = getScoreColor(score, theme);
 
   return (
-    <View style={[styles.compactCard, { backgroundColor: theme.backgroundDefault }]}>
-      <View style={[styles.compactIcon, { backgroundColor: scoreColor + "20" }]}>
-        <Feather name={icon as any} size={14} color={scoreColor} />
+    <View style={styles.circleCardContainer}>
+      <View style={[styles.circleCard, { backgroundColor: theme.backgroundDefault, borderColor: scoreColor + "40" }]}>
+        <View style={[styles.circleIcon, { backgroundColor: scoreColor + "20" }]}>
+          <Feather name={icon as any} size={16} color={scoreColor} />
+        </View>
+        <ThemedText type="small" style={{ color: scoreColor, fontWeight: "700" }}>
+          {score}
+        </ThemedText>
       </View>
-      <ThemedText type="caption" style={{ fontWeight: "600" }} numberOfLines={1}>
+      <ThemedText type="caption" style={[styles.circleLabel, { fontWeight: "600" }]} numberOfLines={1}>
         {category}
-      </ThemedText>
-      <ThemedText type="small" style={{ color: scoreColor, fontWeight: "700" }}>
-        {score}
       </ThemedText>
     </View>
   );
@@ -112,13 +114,47 @@ export default function TodayScreen() {
         </ThemedText>
         <View style={styles.statusGrid}>
           {dailyStatus.map((status) => (
-            <CompactStatusCard
+            <CircleStatusCard
               key={status.category}
               category={status.category}
               icon={status.icon}
               score={status.score}
             />
           ))}
+        </View>
+      </View>
+
+      <View style={[styles.adviceSection, { backgroundColor: theme.backgroundSecondary }]}>
+        <ThemedText type="small" style={[styles.minimalLabel, { color: theme.textSecondary, marginBottom: Spacing.md }]}>
+          COSMIC WISDOM
+        </ThemedText>
+        
+        <View style={styles.adviceColumns}>
+          <View style={styles.adviceColumn}>
+            <View style={styles.adviceHeader}>
+              <Feather name="check" size={12} color={theme.accent} />
+              <ThemedText type="caption" style={[styles.adviceHeaderText, { color: theme.accent }]}>
+                EMBRACE
+              </ThemedText>
+            </View>
+            {dailyAdvice.dos.map((item, index) => (
+              <AdviceItem key={index} text={item} type="do" />
+            ))}
+          </View>
+
+          <View style={[styles.columnDivider, { backgroundColor: theme.border }]} />
+
+          <View style={styles.adviceColumn}>
+            <View style={styles.adviceHeader}>
+              <Feather name="x" size={12} color={theme.error} />
+              <ThemedText type="caption" style={[styles.adviceHeaderText, { color: theme.error }]}>
+                AVOID
+              </ThemedText>
+            </View>
+            {dailyAdvice.donts.map((item, index) => (
+              <AdviceItem key={index} text={item} type="dont" />
+            ))}
+          </View>
         </View>
       </View>
 
@@ -138,7 +174,7 @@ export default function TodayScreen() {
         <Feather name="chevron-right" size={16} color={theme.primary} style={{ marginLeft: "auto" }} />
       </Pressable>
 
-      <View style={styles.timesSection}>
+      <View style={[styles.timesSection, { minHeight: adviceSectionMinHeight }]}>
         <ThemedText type="small" style={[styles.minimalLabel, { color: theme.textSecondary }]}>
           AUSPICIOUS WINDOWS
         </ThemedText>
@@ -162,40 +198,6 @@ export default function TodayScreen() {
             </View>
           ))}
         </Card>
-      </View>
-
-      <View style={[styles.adviceSection, { backgroundColor: theme.backgroundSecondary, minHeight: adviceSectionMinHeight }]}>
-        <ThemedText type="small" style={[styles.minimalLabel, { color: theme.textSecondary, marginBottom: Spacing.md }]}>
-          DAILY GUIDANCE
-        </ThemedText>
-        
-        <View style={styles.adviceColumns}>
-          <View style={styles.adviceColumn}>
-            <View style={styles.adviceHeader}>
-              <Feather name="check" size={12} color={theme.accent} />
-              <ThemedText type="caption" style={[styles.adviceHeaderText, { color: theme.accent }]}>
-                DO
-              </ThemedText>
-            </View>
-            {dailyAdvice.dos.map((item, index) => (
-              <AdviceItem key={index} text={item} type="do" />
-            ))}
-          </View>
-
-          <View style={[styles.columnDivider, { backgroundColor: theme.border }]} />
-
-          <View style={styles.adviceColumn}>
-            <View style={styles.adviceHeader}>
-              <Feather name="x" size={12} color={theme.error} />
-              <ThemedText type="caption" style={[styles.adviceHeaderText, { color: theme.error }]}>
-                DON'T
-              </ThemedText>
-            </View>
-            {dailyAdvice.donts.map((item, index) => (
-              <AdviceItem key={index} text={item} type="dont" />
-            ))}
-          </View>
-        </View>
       </View>
     </ScrollView>
   );
@@ -234,21 +236,32 @@ const styles = StyleSheet.create({
   statusGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: Spacing.sm,
+    justifyContent: "space-between",
+    gap: Spacing.md,
   },
-  compactCard: {
-    width: "31%",
-    padding: Spacing.sm,
-    borderRadius: BorderRadius.sm,
+  circleCardContainer: {
     alignItems: "center",
-    gap: 4,
+    width: "30%",
   },
-  compactIcon: {
+  circleCard: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    gap: 2,
+  },
+  circleIcon: {
     width: 28,
     height: 28,
     borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
+  },
+  circleLabel: {
+    marginTop: Spacing.xs,
+    textAlign: "center",
   },
   ctaButton: {
     flexDirection: "row",
