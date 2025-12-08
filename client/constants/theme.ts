@@ -4,14 +4,16 @@ const darkBrown = "#3D2914";
 const darkBrownLight = "#5C3D1E";
 const mildGold = "#C9A962";
 const mildGoldLight = "#D4BC7D";
+const brightGold = "#E8D5A3";
 const tealAccent = "#14B8A6";
 
 export const Colors = {
   light: {
     text: "#3D2914",
-    textSecondary: "#6B5344",
+    textSecondary: "#5C4A38",
+    textTertiary: "#7A6652",
     buttonText: "#FFFFFF",
-    tabIconDefault: "#6B5344",
+    tabIconDefault: "#5C4A38",
     tabIconSelected: mildGold,
     link: mildGold,
     primary: mildGold,
@@ -31,25 +33,26 @@ export const Colors = {
     cardShadow: "rgba(61, 41, 20, 0.08)",
   },
   dark: {
-    text: "#D4BC7D",
-    textSecondary: "#A89570",
+    text: "#E8D5A3",
+    textSecondary: "#C9B896",
+    textTertiary: "#A89570",
     buttonText: "#FFFFFF",
-    tabIconDefault: "#A89570",
-    tabIconSelected: mildGold,
-    link: mildGold,
-    primary: mildGold,
+    tabIconDefault: "#C9B896",
+    tabIconSelected: brightGold,
+    link: brightGold,
+    primary: brightGold,
     primaryLight: mildGoldLight,
     secondary: darkBrown,
     secondaryLight: darkBrownLight,
-    accent: tealAccent,
+    accent: "#2DD4BF",
     backgroundRoot: "#1A120B",
     backgroundDefault: "#2A1E14",
     backgroundSecondary: "#3D2914",
     backgroundTertiary: "#4A3520",
-    success: "#10B981",
-    warning: "#C9A962",
-    error: "#F43F5E",
-    info: "#0EA5E9",
+    success: "#34D399",
+    warning: "#E8D5A3",
+    error: "#FB7185",
+    info: "#38BDF8",
     border: "#5C3D1E",
     cardShadow: "rgba(0, 0, 0, 0.4)",
   },
@@ -134,22 +137,31 @@ export const Shadows = {
 
 export const Fonts = Platform.select({
   ios: {
-    sans: "system-ui",
-    serif: "ui-serif",
-    rounded: "ui-rounded",
-    mono: "ui-monospace",
+    sans: "System",
+    serif: "Georgia",
+    ancient: "Georgia",
+    rounded: "System",
+    mono: "Menlo",
+  },
+  android: {
+    sans: "Roboto",
+    serif: "serif",
+    ancient: "serif",
+    rounded: "Roboto",
+    mono: "monospace",
   },
   default: {
-    sans: "normal",
+    sans: "System",
     serif: "serif",
-    rounded: "normal",
+    ancient: "serif",
+    rounded: "System",
     mono: "monospace",
   },
   web: {
     sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
     serif: "Georgia, 'Times New Roman', serif",
-    rounded:
-      "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
+    ancient: "Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, 'Times New Roman', serif",
+    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
     mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
   },
 });

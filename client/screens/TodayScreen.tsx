@@ -51,13 +51,11 @@ function CircleStatusCard({
 
 function AdviceItem({ text, type }: { text: string; type: "do" | "dont" }) {
   const { theme } = useTheme();
-  const iconColor = type === "do" ? theme.accent : theme.error;
-  const iconName = type === "do" ? "check-circle" : "x-circle";
+  const textColor = type === "do" ? theme.accent : theme.error;
 
   return (
     <View style={styles.adviceItem}>
-      <Feather name={iconName} size={14} color={iconColor} style={styles.adviceIcon} />
-      <ThemedText type="caption" style={styles.adviceText} numberOfLines={2}>
+      <ThemedText type="caption" style={[styles.adviceText, { color: textColor }]} numberOfLines={2}>
         {text}
       </ThemedText>
     </View>
@@ -124,19 +122,16 @@ export default function TodayScreen() {
         </View>
       </View>
 
-      <View style={[styles.adviceSection, { backgroundColor: theme.backgroundSecondary }]}>
+      <View style={styles.adviceSection}>
         <ThemedText type="small" style={[styles.minimalLabel, { color: theme.textSecondary, marginBottom: Spacing.md }]}>
           COSMIC WISDOM
         </ThemedText>
         
         <View style={styles.adviceColumns}>
           <View style={styles.adviceColumn}>
-            <View style={styles.adviceHeader}>
-              <Feather name="check" size={12} color={theme.accent} />
-              <ThemedText type="caption" style={[styles.adviceHeaderText, { color: theme.accent }]}>
-                EMBRACE
-              </ThemedText>
-            </View>
+            <ThemedText type="caption" style={[styles.adviceHeaderText, { color: theme.accent }]}>
+              EMBRACE
+            </ThemedText>
             {dailyAdvice.dos.map((item, index) => (
               <AdviceItem key={index} text={item} type="do" />
             ))}
@@ -145,12 +140,9 @@ export default function TodayScreen() {
           <View style={[styles.columnDivider, { backgroundColor: theme.border }]} />
 
           <View style={styles.adviceColumn}>
-            <View style={styles.adviceHeader}>
-              <Feather name="x" size={12} color={theme.error} />
-              <ThemedText type="caption" style={[styles.adviceHeaderText, { color: theme.error }]}>
-                AVOID
-              </ThemedText>
-            </View>
+            <ThemedText type="caption" style={[styles.adviceHeaderText, { color: theme.error }]}>
+              AVOID
+            </ThemedText>
             {dailyAdvice.donts.map((item, index) => (
               <AdviceItem key={index} text={item} type="dont" />
             ))}
@@ -293,9 +285,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   adviceSection: {
-    padding: Spacing.lg,
-    borderRadius: BorderRadius.md,
-    marginBottom: Spacing.lg,
+    marginBottom: Spacing.xl,
   },
   adviceColumns: {
     flexDirection: "row",
@@ -307,27 +297,15 @@ const styles = StyleSheet.create({
     width: 1,
     marginHorizontal: Spacing.md,
   },
-  adviceHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: Spacing.sm,
-    gap: Spacing.xs,
-  },
   adviceHeaderText: {
     fontWeight: "700",
     letterSpacing: 1,
-  },
-  adviceItem: {
-    flexDirection: "row",
-    alignItems: "flex-start",
     marginBottom: Spacing.sm,
   },
-  adviceIcon: {
-    marginTop: 2,
-    marginRight: Spacing.xs,
+  adviceItem: {
+    marginBottom: Spacing.sm,
   },
   adviceText: {
-    flex: 1,
     lineHeight: 18,
   },
 });

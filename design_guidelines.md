@@ -114,25 +114,27 @@
 
 ### Color Palette
 **Primary Colors**:
-- Primary: Mild Gold (#C9A962) - divine, elegant warmth
+- Primary: Bright Gold (#E8D5A3) - divine, elegant warmth
 - Primary Light: Soft Gold (#D4BC7D) - subtle highlights
 - Secondary: Dark Brown (#3D2914) - grounded, earthy
-- Accent: Teal (#14B8A6) - wisdom, clarity
+- Accent: Bright Teal (#2DD4BF) - wisdom, clarity
 
 **Light Mode Neutrals**:
 - Background Root: Warm Cream (#F5F0E8)
 - Surface: White (#FFFFFF)
 - Background Secondary: Soft Beige (#EDE6DB)
 - Text Primary: Dark Brown (#3D2914)
-- Text Secondary: Medium Brown (#6B5344)
+- Text Secondary: Medium Brown (#5C4A38) - enhanced visibility
+- Text Tertiary: Light Brown (#7A6652)
 - Border: Warm Taupe (#D4C9B8)
 
 **Dark Mode Neutrals**:
 - Background Root: Deep Espresso (#1A120B)
 - Surface: Rich Mahogany (#2A1E14)
 - Background Secondary: Dark Brown (#3D2914)
-- Text Primary: Mild Gold (#D4BC7D)
-- Text Secondary: Muted Gold (#A89570)
+- Text Primary: Bright Gold (#E8D5A3) - enhanced visibility
+- Text Secondary: Warm Gold (#C9B896) - enhanced visibility
+- Text Tertiary: Muted Gold (#A89570)
 - Border: Warm Brown (#5C3D1E)
 
 **Semantic**:
@@ -146,7 +148,10 @@
 - Divine gradient: Gold to Soft Gold (#C9A962 to #D4BC7D)
 
 ### Typography
-**Font Family**: System default (SF Pro for iOS, Roboto for Android)
+**Font Family**: Ancient/Serif style for authentic feel
+- iOS: Georgia (elegant serif)
+- Android: System serif
+- Web: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, 'Times New Roman', serif
 **Scale**:
 - Heading 1: 32pt, Bold
 - Heading 2: 24pt, Semibold
