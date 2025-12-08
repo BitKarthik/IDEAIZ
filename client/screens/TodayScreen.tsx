@@ -49,13 +49,12 @@ function CircleStatusCard({
   );
 }
 
-function AdviceItem({ text, type }: { text: string; type: "do" | "dont" }) {
+function AdviceItem({ text }: { text: string }) {
   const { theme } = useTheme();
-  const textColor = type === "do" ? theme.accent : theme.error;
 
   return (
     <View style={styles.adviceItem}>
-      <ThemedText type="caption" style={[styles.adviceText, { color: textColor }]} numberOfLines={2}>
+      <ThemedText type="body" style={[styles.adviceText, { color: theme.text }]} numberOfLines={2}>
         {text}
       </ThemedText>
     </View>
@@ -108,7 +107,7 @@ export default function TodayScreen() {
 
       <View style={styles.statusSection}>
         <ThemedText type="small" style={[styles.minimalLabel, { color: theme.textSecondary }]}>
-          TODAY'S ENERGY
+          TODAY'S SUMMARY
         </ThemedText>
         <View style={styles.statusGrid}>
           {dailyStatus.map((status) => (
@@ -123,28 +122,22 @@ export default function TodayScreen() {
       </View>
 
       <View style={styles.adviceSection}>
-        <ThemedText type="small" style={[styles.minimalLabel, { color: theme.textSecondary, marginBottom: Spacing.md }]}>
-          COSMIC WISDOM
-        </ThemedText>
-        
         <View style={styles.adviceColumns}>
           <View style={styles.adviceColumn}>
-            <ThemedText type="caption" style={[styles.adviceHeaderText, { color: theme.accent }]}>
-              EMBRACE
+            <ThemedText type="body" style={[styles.adviceHeaderText, { color: theme.text }]}>
+              Do
             </ThemedText>
             {dailyAdvice.dos.map((item, index) => (
-              <AdviceItem key={index} text={item} type="do" />
+              <AdviceItem key={index} text={item} />
             ))}
           </View>
 
-          <View style={[styles.columnDivider, { backgroundColor: theme.border }]} />
-
           <View style={styles.adviceColumn}>
-            <ThemedText type="caption" style={[styles.adviceHeaderText, { color: theme.error }]}>
-              AVOID
+            <ThemedText type="body" style={[styles.adviceHeaderText, { color: theme.text }]}>
+              Don't
             </ThemedText>
             {dailyAdvice.donts.map((item, index) => (
-              <AdviceItem key={index} text={item} type="dont" />
+              <AdviceItem key={index} text={item} />
             ))}
           </View>
         </View>
@@ -197,39 +190,46 @@ export default function TodayScreen() {
 
 const styles = StyleSheet.create({
   headerSection: {
-    marginBottom: Spacing.lg,
+    marginBottom: Spacing["3xl"],
+    alignItems: "center",
   },
   dateLabel: {
     textTransform: "uppercase",
-    letterSpacing: 1,
-    fontWeight: "500",
+    letterSpacing: 2,
+    fontWeight: "400",
+    fontSize: 13,
   },
   cosmicSection: {
-    marginBottom: Spacing["2xl"],
+    marginBottom: Spacing["4xl"],
+    alignItems: "center",
   },
   sectionLabel: {
-    marginBottom: Spacing.sm,
-    fontWeight: "600",
+    marginBottom: Spacing.lg,
+    fontWeight: "400",
+    textAlign: "center",
   },
   horoscopeText: {
-    lineHeight: 24,
+    lineHeight: 28,
     fontWeight: "400",
+    textAlign: "center",
+    letterSpacing: 0.3,
   },
   minimalLabel: {
     textTransform: "uppercase",
-    letterSpacing: 1.5,
-    fontWeight: "600",
-    fontSize: 10,
-    marginBottom: Spacing.sm,
+    letterSpacing: 2,
+    fontWeight: "400",
+    fontSize: 11,
+    marginBottom: Spacing.lg,
+    textAlign: "center",
   },
   statusSection: {
-    marginBottom: Spacing.xl,
+    marginBottom: Spacing["4xl"],
   },
   statusGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    gap: Spacing.md,
+    gap: Spacing.xl,
   },
   circleCardContainer: {
     alignItems: "center",
@@ -252,15 +252,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   circleLabel: {
-    marginTop: Spacing.xs,
+    marginTop: Spacing.sm,
     textAlign: "center",
   },
   ctaButton: {
     flexDirection: "row",
     alignItems: "center",
-    padding: Spacing.md,
+    padding: Spacing.lg,
     borderRadius: BorderRadius.sm,
-    marginBottom: Spacing.xl,
+    marginBottom: Spacing["3xl"],
   },
   ctaIconContainer: {
     width: 32,
@@ -268,16 +268,16 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: Spacing.sm,
+    marginRight: Spacing.md,
   },
   timesSection: {
-    marginBottom: Spacing.xl,
+    marginBottom: Spacing["3xl"],
   },
   timesCard: {
-    padding: Spacing.md,
+    padding: Spacing.lg,
   },
   timeRow: {
-    paddingVertical: Spacing.sm,
+    paddingVertical: Spacing.md,
   },
   timeInfo: {
     flexDirection: "row",
@@ -285,27 +285,30 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   adviceSection: {
-    marginBottom: Spacing.xl,
+    marginBottom: Spacing["4xl"],
+    alignItems: "center",
   },
   adviceColumns: {
     flexDirection: "row",
+    width: "100%",
   },
   adviceColumn: {
     flex: 1,
-  },
-  columnDivider: {
-    width: 1,
-    marginHorizontal: Spacing.md,
+    alignItems: "center",
   },
   adviceHeaderText: {
-    fontWeight: "700",
-    letterSpacing: 1,
-    marginBottom: Spacing.sm,
+    fontWeight: "400",
+    letterSpacing: 2,
+    marginBottom: Spacing.lg,
+    textAlign: "center",
   },
   adviceItem: {
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.md,
+    alignItems: "center",
   },
   adviceText: {
-    lineHeight: 18,
+    lineHeight: 24,
+    textAlign: "center",
+    letterSpacing: 0.3,
   },
 });

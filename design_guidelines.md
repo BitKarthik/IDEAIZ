@@ -132,10 +132,15 @@
 - Background Root: Deep Espresso (#1A120B)
 - Surface: Rich Mahogany (#2A1E14)
 - Background Secondary: Dark Brown (#3D2914)
-- Text Primary: Bright Gold (#E8D5A3) - enhanced visibility
-- Text Secondary: Warm Gold (#C9B896) - enhanced visibility
-- Text Tertiary: Muted Gold (#A89570)
+- Text Primary: Pure White (#FFFFFF) - maximum visibility
+- Text Secondary: Pure White (#FFFFFF) - maximum visibility
+- Text Tertiary: Pure White (#FFFFFF)
 - Border: Warm Brown (#5C3D1E)
+
+**Dark Mode Accent Colors** (for status indicators):
+- Accent: Bright Teal (#2DD4BF) - high scores
+- Secondary: Amber (#F59E0B) - medium scores
+- Error: Rose (#EF4444) - low scores
 
 **Semantic**:
 - Success: Emerald (#10B981)
