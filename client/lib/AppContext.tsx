@@ -60,6 +60,15 @@ interface DailyAdvice {
   donts: string[];
 }
 
+interface UpdateProfileData {
+  name?: string;
+  birthDate?: Date;
+  birthTime?: string;
+  birthPlace?: string;
+  birthLatitude?: number;
+  birthLongitude?: number;
+}
+
 interface AppContextType extends AppState {
   dailyStatus: DailyStatus[];
   dailyAdvice: DailyAdvice;
@@ -68,6 +77,7 @@ interface AppContextType extends AppState {
   clearMessages: () => void;
   setOnboarded: (value: boolean) => void;
   updateBirthDetails: (details: BirthDetails) => void;
+  updateProfile: (data: UpdateProfileData) => void;
   setSubscribed: (value: boolean) => void;
 }
 
@@ -168,6 +178,28 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const updateProfile = (data: UpdateProfileData) => {
+    if (user) {
+      const updatedUser = { ...user };
+      
+      if (data.name) {
+        updatedUser.name = data.name;
+      }
+      
+      if (data.birthDate || data.birthTime || data.birthPlace) {
+        updatedUser.birthDetails = {
+          date: data.birthDate || user.birthDetails?.date || new Date(),
+          time: data.birthTime || user.birthDetails?.time || "",
+          place: data.birthPlace || user.birthDetails?.place || "",
+          latitude: data.birthLatitude ?? user.birthDetails?.latitude ?? 0,
+          longitude: data.birthLongitude ?? user.birthDetails?.longitude ?? 0,
+        };
+      }
+      
+      setUser(updatedUser);
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -184,6 +216,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         clearMessages,
         setOnboarded,
         updateBirthDetails,
+        updateProfile,
         setSubscribed,
       }}
     >

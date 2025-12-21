@@ -115,50 +115,66 @@ function PrimaryButton({
 export default function EditProfileModal() {
   const insets = useSafeAreaInsets();
   const { theme } = useTheme();
-  const { user, setUser } = useApp();
+  const { user, updateProfile } = useApp();
   const navigation = useNavigation();
 
+  const formatDateForDisplay = (date: Date | undefined) => {
+    if (!date) return "";
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  };
+
   const [name, setName] = useState(user?.name || "");
-  const [birthDate, setBirthDate] = useState(
-    user?.birthDetails?.date
-      ? `${user.birthDetails.date.getMonth() + 1}/${user.birthDetails.date.getDate()}/${user.birthDetails.date.getFullYear()}`
-      : ""
+  const [birthDateStr, setBirthDateStr] = useState(
+    formatDateForDisplay(user?.birthDetails?.date)
   );
   const [birthTime, setBirthTime] = useState(user?.birthDetails?.time || "");
   const [birthPlace, setBirthPlace] = useState(user?.birthDetails?.place || "");
+  const [dateError, setDateError] = useState("");
+
+  const parseDate = (dateStr: string): Date | null => {
+    if (!dateStr.trim()) return null;
+    
+    const dateParts = dateStr.split("/");
+    if (dateParts.length !== 3) return null;
+    
+    const month = parseInt(dateParts[0], 10) - 1;
+    const day = parseInt(dateParts[1], 10);
+    const year = parseInt(dateParts[2], 10);
+    
+    if (isNaN(month) || isNaN(day) || isNaN(year)) return null;
+    if (month < 0 || month > 11 || day < 1 || day > 31 || year < 1900 || year > 2100) return null;
+    
+    return new Date(year, month, day);
+  };
+
+  const handleDateChange = (text: string) => {
+    setBirthDateStr(text);
+    if (text.trim() && !parseDate(text)) {
+      setDateError("Please use MM/DD/YYYY format");
+    } else {
+      setDateError("");
+    }
+  };
 
   const handleSave = () => {
     if (!user) return;
 
-    const dateParts = birthDate.split("/");
-    let parsedDate: Date | null = null;
-    if (dateParts.length === 3) {
-      const month = parseInt(dateParts[0], 10) - 1;
-      const day = parseInt(dateParts[1], 10);
-      const year = parseInt(dateParts[2], 10);
-      if (!isNaN(month) && !isNaN(day) && !isNaN(year)) {
-        parsedDate = new Date(year, month, day);
-      }
-    }
-
-    setUser({
-      ...user,
-      name: name.trim() || user.name,
-      birthDetails: parsedDate
-        ? {
-            date: parsedDate,
-            time: birthTime || user.birthDetails?.time || "",
-            place: birthPlace || user.birthDetails?.place || "",
-            latitude: user.birthDetails?.latitude || 0,
-            longitude: user.birthDetails?.longitude || 0,
-          }
-        : user.birthDetails,
+    const parsedDate = parseDate(birthDateStr);
+    
+    updateProfile({
+      name: name.trim() || undefined,
+      birthDate: parsedDate || undefined,
+      birthTime: birthTime.trim() || undefined,
+      birthPlace: birthPlace.trim() || undefined,
     });
 
     navigation.goBack();
   };
 
-  const isFormValid = name.trim().length > 0;
+  const isFormValid = name.trim().length > 0 && !dateError;
 
   return (
     <KeyboardAwareScrollViewCompat
@@ -207,13 +223,20 @@ export default function EditProfileModal() {
           Your birth details are used to generate accurate astrological readings
         </ThemedText>
 
-        <FormInput
-          label="Birth Date"
-          value={birthDate}
-          onChangeText={setBirthDate}
-          placeholder="MM/DD/YYYY"
-          icon="calendar"
-        />
+        <View>
+          <FormInput
+            label="Birth Date"
+            value={birthDateStr}
+            onChangeText={handleDateChange}
+            placeholder="MM/DD/YYYY"
+            icon="calendar"
+          />
+          {dateError ? (
+            <ThemedText type="caption" style={{ color: theme.error, marginTop: -Spacing.md, marginBottom: Spacing.md }}>
+              {dateError}
+            </ThemedText>
+          ) : null}
+        </View>
 
         <FormInput
           label="Birth Time"
