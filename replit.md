@@ -104,3 +104,23 @@ Preferred communication style: Simple, everyday language.
 - ESLint with Expo configuration and Prettier integration
 - TypeScript strict mode enabled
 - Format checking and auto-fixing via Prettier
+
+# Current Implementation Status
+
+## Completed Features
+- **Today Screen**: Daily horoscope, color-coded status circles (teal/amber/red), Embrace/Avoid sections, auspicious times
+- **Ask Screen**: AI astrologer chat with OpenAI integration, preset questions
+- **Profile Screen**: User profile display with edit functionality, subscription management
+- **Edit Profile Modal**: Form for name, birth date, time, and place with validation
+- **n8n Integration**: One-way REST API for workflow automation (POST /api/n8n)
+- **Theme System**: Proper light/dark mode detection and CTA text contrast
+
+## Backend API Routes
+- User CRUD: `/api/users` (register), `/api/users/:id` (get/update/delete)
+- n8n webhook: `/api/n8n` (POST to external workflow)
+- Zod validation on all endpoints
+
+## Known Limitations (Planned Enhancements)
+- **Profile Persistence**: EditProfileModal currently updates in-memory state only; backend API exists but requires authentication before wiring
+- **Authentication**: Backend has user CRUD routes but no hashed passwords or session auth yet
+- **Data Synchronization**: AppContext uses hardcoded default user; needs hydration from backend once auth is implemented
