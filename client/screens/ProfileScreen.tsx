@@ -109,8 +109,16 @@ export default function ProfileScreen() {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.profileHeader}>
-        <View style={[styles.avatar, { backgroundColor: theme.primary }]}>
-          <Feather name="user" size={40} color="#FFFFFF" />
+        <View style={styles.avatarContainer}>
+          <View style={[styles.avatar, { backgroundColor: theme.primary }]}>
+            <Feather name="user" size={40} color="#FFFFFF" />
+          </View>
+          <Pressable
+            style={[styles.editAvatarButton, { backgroundColor: theme.backgroundDefault, borderColor: theme.border }]}
+            onPress={() => navigation.navigate("EditProfile")}
+          >
+            <Feather name="edit-2" size={14} color={theme.primary} />
+          </Pressable>
         </View>
         <ThemedText type="h2" style={styles.userName}>
           {user?.name || "Seeker"}
@@ -118,6 +126,15 @@ export default function ProfileScreen() {
         <ThemedText type="small" style={{ color: theme.textSecondary }}>
           {user?.isSubscribed ? "Premium Member" : "Free Trial"}
         </ThemedText>
+        <Pressable
+          style={[styles.editProfileButton, { borderColor: theme.primary }]}
+          onPress={() => navigation.navigate("EditProfile")}
+        >
+          <Feather name="edit-3" size={14} color={theme.primary} />
+          <ThemedText type="small" style={{ color: theme.primary, marginLeft: Spacing.xs }}>
+            Edit Profile
+          </ThemedText>
+        </Pressable>
       </View>
 
       <View style={styles.statsContainer}>
@@ -239,13 +256,36 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: Spacing.xl,
   },
+  avatarContainer: {
+    position: "relative",
+    marginBottom: Spacing.md,
+  },
   avatar: {
     width: 80,
     height: 80,
     borderRadius: 40,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: Spacing.md,
+  },
+  editAvatarButton: {
+    position: "absolute",
+    bottom: 0,
+    right: -4,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+  },
+  editProfileButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.sm,
+    borderRadius: BorderRadius.lg,
+    borderWidth: 1,
   },
   userName: {
     marginBottom: Spacing.xs,

@@ -5,6 +5,7 @@ import PresetQuestionsModal from "@/screens/PresetQuestionsModal";
 import BirthChartModal from "@/screens/BirthChartModal";
 import SubscriptionModal from "@/screens/SubscriptionModal";
 import OnboardingScreen from "@/screens/OnboardingScreen";
+import EditProfileModal from "@/screens/EditProfileModal";
 import { useScreenOptions } from "@/hooks/useScreenOptions";
 
 export type RootStackParamList = {
@@ -13,6 +14,7 @@ export type RootStackParamList = {
   PresetQuestions: undefined;
   BirthChart: undefined;
   Subscription: undefined;
+  EditProfile: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -54,6 +56,14 @@ export default function RootStackNavigator() {
         options={{
           presentation: "modal",
           headerTitle: "Subscription",
+        }}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfileModal}
+        options={{
+          presentation: "modal",
+          headerTitle: "Edit Profile",
         }}
       />
     </Stack.Navigator>
