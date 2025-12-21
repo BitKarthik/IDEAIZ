@@ -1,8 +1,22 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "node:http";
+import { createHash, randomBytes } from "node:crypto";
 import { storage } from "./storage";
 import { registerUserSchema, updateUserSchema } from "@shared/schema";
 import { z } from "zod";
+
+function hashPassword(password: string, salt?: string): { hash: string; salt: string } {
+  const useSalt = salt || randomBytes(16).toString("hex");
+  const hash = createHash("sha256")
+    .update(password + useSalt)
+    .digest("hex");
+  return { hash, salt: useSalt };
+}
+
+function verifyPassword(password: string, storedHash: string, salt: string): boolean {
+  const { hash } = hashPassword(password, salt);
+  return hash === storedHash;
+}
 
 const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL || "";
 
@@ -54,7 +68,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // User registration
+  // User registration (POST /api/users)
+  app.post("/api/users", async (req: Request, res: Response) => {
+    try {
+      const validatedData = registerUserSchema.parse(req.body);
+
+      const existingUser = await storage.getUserByEmail(validatedData.email);
+      if (existingUser) {
+        return res.status(400).json({ error: "Email already registered" });
+      }
+
+      const { hash, salt } = hashPassword(validatedData.password);
+
+      const user = await storage.createUser({
+        email: validatedData.email,
+        password: `${salt}:${hash}`,
+        name: validatedData.name,
+        birthDate: validatedData.birthDate ? new Date(validatedData.birthDate) : undefined,
+        birthTime: validatedData.birthTime,
+        birthPlace: validatedData.birthPlace,
+      });
+
+      const { password, ...safeUser } = user;
+      res.status(201).json(safeUser);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Invalid input", details: error.errors });
+      }
+      console.error("Error registering user:", error);
+      res.status(500).json({ error: "Failed to register user" });
+    }
+  });
+
+  // Also support /api/users/register for backward compatibility
   app.post("/api/users/register", async (req: Request, res: Response) => {
     try {
       const validatedData = registerUserSchema.parse(req.body);
@@ -64,9 +110,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Email already registered" });
       }
 
+      const { hash, salt } = hashPassword(validatedData.password);
+
       const user = await storage.createUser({
         email: validatedData.email,
-        password: validatedData.password,
+        password: `${salt}:${hash}`,
         name: validatedData.name,
       });
 

@@ -209,6 +209,12 @@ export default function ProfileScreen() {
 
       <View style={styles.menuContainer}>
         <MenuButton
+          icon="user-plus"
+          label="Create Account"
+          onPress={() => navigation.navigate("Register")}
+          color={theme.primary}
+        />
+        <MenuButton
           icon="bell"
           label="Notifications"
           onPress={() => {}}

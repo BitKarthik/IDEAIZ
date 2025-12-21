@@ -40,6 +40,10 @@ export const registerUserSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   name: z.string().min(1),
+  username: z.string().optional(),
+  birthDate: z.string().optional(),
+  birthTime: z.string().optional(),
+  birthPlace: z.string().optional(),
 });
 
 export const loginUserSchema = z.object({

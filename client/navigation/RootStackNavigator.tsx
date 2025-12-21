@@ -6,6 +6,7 @@ import BirthChartModal from "@/screens/BirthChartModal";
 import SubscriptionModal from "@/screens/SubscriptionModal";
 import OnboardingScreen from "@/screens/OnboardingScreen";
 import EditProfileModal from "@/screens/EditProfileModal";
+import RegisterScreen from "@/screens/RegisterScreen";
 import { useScreenOptions } from "@/hooks/useScreenOptions";
 
 export type RootStackParamList = {
@@ -15,6 +16,7 @@ export type RootStackParamList = {
   BirthChart: undefined;
   Subscription: undefined;
   EditProfile: undefined;
+  Register: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -64,6 +66,14 @@ export default function RootStackNavigator() {
         options={{
           presentation: "modal",
           headerTitle: "Edit Profile",
+        }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={RegisterScreen}
+        options={{
+          presentation: "modal",
+          headerTitle: "Create Account",
         }}
       />
     </Stack.Navigator>
