@@ -1,21 +1,25 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "node:http";
-import { createHash, randomBytes } from "node:crypto";
+import { pbkdf2Sync, randomBytes, timingSafeEqual } from "node:crypto";
 import { storage } from "./storage";
 import { registerUserSchema, updateUserSchema } from "@shared/schema";
 import { z } from "zod";
 
+const ITERATIONS = 100000;
+const KEY_LENGTH = 64;
+const DIGEST = "sha512";
+
 function hashPassword(password: string, salt?: string): { hash: string; salt: string } {
-  const useSalt = salt || randomBytes(16).toString("hex");
-  const hash = createHash("sha256")
-    .update(password + useSalt)
-    .digest("hex");
+  const useSalt = salt || randomBytes(32).toString("hex");
+  const hash = pbkdf2Sync(password, useSalt, ITERATIONS, KEY_LENGTH, DIGEST).toString("hex");
   return { hash, salt: useSalt };
 }
 
 function verifyPassword(password: string, storedHash: string, salt: string): boolean {
   const { hash } = hashPassword(password, salt);
-  return hash === storedHash;
+  const storedBuffer = Buffer.from(storedHash, "hex");
+  const derivedBuffer = Buffer.from(hash, "hex");
+  return timingSafeEqual(storedBuffer, derivedBuffer);
 }
 
 const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL || "";
